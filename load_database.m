@@ -8,7 +8,7 @@ persistent numImage;
 
 %% Dataset Loading Function
 if(isempty(loadedImage)) 
-    allImages = zeros(92*112,... % Pixels of each image
+    allImages = zeros(112*92,... % Pixels of each image
         40); % Number of folders representing a single person
     cd(strcat('training_set')); 
     for i=1:40 
@@ -25,4 +25,4 @@ if(isempty(loadedImage))
     numImage = uint8(allImages); % changes all the images within the database to 8-bit images
 end
 loadedImage = ""; % Needs to return to empty next time image needs to be loaded
-output_image = numImage;
+output_image = numImage; 
