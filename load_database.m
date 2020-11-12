@@ -3,23 +3,26 @@ function output_image = load_database()
 % Loads the dataset in preparation for face recognition
 
 %% Variables
-persistent loaded; % persistent data type is used for 
-persistent numeric_Image;
+persistent loadedImage; % persistent type is local to function but retain memory when used in another file
+persistent numImage;
 
 %% Dataset Loading Function
-if(isempty(loaded))
-    all_Images = zeros(10304,40);
-    cd(strcat('training_set'));
-    for i=1:40
-        cd(strcat('s',num2str(i)));
-        for j=1:10
-            image_Container = imread(strcat(num2str(j),'.pgm'));
-            all_Images(:,(i-1)*10+j)=reshape(image_Container,size(image_Container,1)*size(image_Container,2),1);
+if(isempty(loadedImage)) 
+    allImages = zeros(92*112,... % Pixels of each image
+        40); % Number of folders representing a single person
+    cd(strcat('training_set')); 
+    for i=1:40 
+        cd(strcat('s',num2str(i))); 
+        for j=1:10 
+            imageContainer = imread(strcat(num2str(j),'.pgm')); 
+            allImages(:,(i-1)*10+j)... % get all images from each folder
+                = reshape(imageContainer,size(imageContainer,1)... 
+                *size(imageContainer,2),1); % reshape images into arrays for analysis
         end
         disp('Loading Database');
-        cd ..
+        cd .. % changes folder directory back to load other faces
     end
-    numeric_Image = uint8(all_Images);
+    numImage = uint8(allImages); % changes all the images within the database to 8-bit images
 end
-loaded = 1;
-output_image = numeric_Image;
+loadedImage = ""; % Needs to return to empty next time image needs to be loaded
+output_image = numImage;
